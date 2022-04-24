@@ -123,7 +123,7 @@ extension TasksViewController {
     }
     
     private func saveTask(with task: Task, withName name: String, andNote note: String) {
-        StorageManager.shared.update(task, withName: name, andNote: note)
+        StorageManager.shared.edit(task, withName: name, andNote: note)
         tableView.reloadData()
     }
 }

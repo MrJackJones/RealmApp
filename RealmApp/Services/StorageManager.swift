@@ -60,12 +60,13 @@ class StorageManager {
         }
     }
     
-    func edit(_ task: Task, _ taskList: TaskList, newValue: String) {
+    func edit(_ task: Task, withName name: String, andNote note: String) {
         write {
-            taskList.name = newValue
+            task.setValue(name, forKey: "name")
+            task.setValue(note, forKey: "note")
         }
     }
-
+    
     func done(_ task: Task) {
         write {
             task.setValue(true, forKey: "isComplete")
@@ -77,14 +78,7 @@ class StorageManager {
             task.setValue(false, forKey: "isComplete")
         }
     }
-    
-    func update(_ task: Task, withName name: String, andNote note: String) {
-        write {
-            task.setValue(name, forKey: "name")
-            task.setValue(note, forKey: "note")
-        }
-    }
-    
+
     private func write(completion: () -> Void) {
         do {
             try realm.write {
