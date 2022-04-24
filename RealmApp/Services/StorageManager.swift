@@ -46,12 +46,6 @@ class StorageManager {
             taskList.tasks.setValue(true, forKey: "isComplete")
         }
     }
-    
-    func undone(_ taskList: TaskList) {
-        write {
-            taskList.tasks.setValue(false, forKey: "isComplete")
-        }
-    }
 
     // MARK: - Tasks
     func save(_ task: Task, to taskList: TaskList) {
@@ -60,10 +54,9 @@ class StorageManager {
         }
     }
     
-    func delete(_ task: Task, _ taskList: TaskList) {
+    func delete(_ task: Task) {
         write {
-            realm.delete(taskList.tasks)
-            realm.delete(taskList)
+            realm.delete(task)
         }
     }
     
@@ -73,15 +66,22 @@ class StorageManager {
         }
     }
 
-    func done(_ task: Task, _ taskList: TaskList) {
+    func done(_ task: Task) {
         write {
-            taskList.tasks.setValue(true, forKey: "isComplete")
+            task.setValue(true, forKey: "isComplete")
         }
     }
     
-    func undone(_ task: Task, _ taskList: TaskList) {
+    func undone(_ task: Task) {
         write {
-            taskList.tasks.setValue(false, forKey: "isComplete")
+            task.setValue(false, forKey: "isComplete")
+        }
+    }
+    
+    func update(_ task: Task, withName name: String, andNote note: String) {
+        write {
+            task.setValue(name, forKey: "name")
+            task.setValue(note, forKey: "note")
         }
     }
     

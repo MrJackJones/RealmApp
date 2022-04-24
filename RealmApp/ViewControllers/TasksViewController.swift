@@ -46,7 +46,7 @@ class TasksViewController: UITableViewController {
         let doneLabel = indexPath.section == 0 ? "Done" : "Undone"
 
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
-            StorageManager.shared.delete(task, self.taskList)
+            StorageManager.shared.delete(task)
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
 
@@ -59,13 +59,14 @@ class TasksViewController: UITableViewController {
 
         let doneAction = UIContextualAction(style: .normal, title: doneLabel) { _, _, isDone in
             if indexPath.section == 0 {
-                StorageManager.shared.done(task, self.taskList)
+                StorageManager.shared.done(task)
             } else {
-                StorageManager.shared.undone(task, self.taskList)
+                StorageManager.shared.undone(task)
             }
-            
+    
             tableView.reloadData()
             isDone(true)
+            
         }
 
         editAction.backgroundColor = .orange
@@ -122,10 +123,7 @@ extension TasksViewController {
     }
     
     private func saveTask(with task: Task, withName name: String, andNote note: String) {
-        task.name = name
-        task.note = note
-        StorageManager.shared.save(task, to: taskList)
-        let rowIndex = IndexPath(row: currentTasks.index(of: task) ?? 0, section: 0)
-        tableView.insertRows(at: [rowIndex], with: .automatic)
+        StorageManager.shared.update(task, withName: name, andNote: note)
+        tableView.reloadData()
     }
 }
